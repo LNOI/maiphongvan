@@ -1,17 +1,48 @@
-name: Deploy git hub action CI/CD
+name: Django CI/CD
 
 on:
   push:
-    branches: ["main"]
+    branches: [main]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-20.04
+    services:
+      mysql:
+        image: mysql
+        env:
+          MYSQL_ROOT_PASSWORD: admin
+          MYSQL_DATABASE: testmysql
+        ports: ['3306:3306']
     steps:
-      - uses: actions/checkout@v3
-      - name: Build the Docker image
-        run: docker-compose up --build
-      - name: Check http
-        run: curl http://localhost:8000/getdata
+    - uses: actions/checkout@v2
+    - name: Set up Python $
+      uses: actions/setup-python@v2
+      with:
+        python-version: $
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Run migrations
+      run: python manage.py migrate
+      env: 
+          DBNAME: mysql
+          DBUSER: root
+          DBPASSWORD: admin
+          DBHOST: 127.0.0.1
+          DBPORT: $
+    - name: Run Tests
+      run: |
+        python manage.py test
+      env: 
+        DBNAME: mysql
+        DBUSER: root
+        DBPASSWORD: admin
+        DBHOST: 127.0.0.1
+        DBPORT: $ 
+
+      
+
         
       
