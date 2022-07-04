@@ -10,6 +10,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Build the Docker image
-        run: curl google.com
+        run: docker-compose up --build
+      - name: Check http
+        run: curl http://localhost:8000/getdata
         
       
