@@ -1,0 +1,15 @@
+name: Deploy git hub action CI/CD
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: action/checkout@v3
+      - name: Build the Docker image
+        run: curl google.com
+        
+      
