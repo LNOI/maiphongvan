@@ -8,7 +8,7 @@ jobs:
   build:
     runs-on: ubuntu-20.04
     steps:
-      - uses: action/checkout@v3
+      - uses: action/checkout@v2
       - name: Build the Docker image
         run: curl google.com
         
